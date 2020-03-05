@@ -69,5 +69,5 @@ AirCoroutine.execute(AirCoroutine.getViewModel(activity as Activity, MainViewMod
       // do something on the UI thread when the task has failed
   }
 
-})}
+})
 ```
