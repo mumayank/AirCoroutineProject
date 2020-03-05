@@ -1,6 +1,6 @@
 # AirCoroutineProject
 
-[![](https://jitpack.io/v/mumayank/AirLocation.svg)](https://jitpack.io/#mumayank/AirLocation)
+[![](https://jitpack.io/v/mumayank/AirCoroutineProject.svg)](https://jitpack.io/#mumayank/AirCoroutineProject)
 
 This library will help you to use the power of ViewModel and Coroutines to do background tasks with confidence!
 
@@ -27,7 +27,7 @@ dependencies {
     implementation 'androidx.constraintlayout:constraintlayout:LATEST_VERSION'
 }
 ```
-where LATEST_VERSION is [![](https://jitpack.io/v/mumayank/AirLocation.svg)](https://jitpack.io/#mumayank/AirLocation)
+where LATEST_VERSION is [![](https://jitpack.io/v/mumayank/AirCoroutineProject.svg)](https://jitpack.io/#mumayank/AirCoroutineProject)
 
 ## Usage
 
