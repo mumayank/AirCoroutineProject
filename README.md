@@ -24,7 +24,7 @@ android {
     }
 }
 dependencies {
-    implementation 'androidx.constraintlayout:constraintlayout:LATEST_VERSION'
+    implementation 'com.github.mumayank:AirCoroutineProject:LATEST_VERSION'
 }
 ```
 where LATEST_VERSION is [![](https://jitpack.io/v/mumayank/AirCoroutineProject.svg)](https://jitpack.io/#mumayank/AirCoroutineProject)
