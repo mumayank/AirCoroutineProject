@@ -36,7 +36,7 @@ Suppose you want to use this library for `MainActivity`. Then you need to create
 ```kotlin
 import androidx.lifecycle.ViewModel
 class MainViewModel : ViewModel() {
-    // any variables which are needed in the background task
+    // any variables which are needed in the background task (useful when you want to transfer data to fragments)
     var value = 0
 }
 ```
