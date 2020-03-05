@@ -1,0 +1,3 @@
+rootProject.name='AirCoroutineProject'
+include ':app'
+include ':aircoroutine'
