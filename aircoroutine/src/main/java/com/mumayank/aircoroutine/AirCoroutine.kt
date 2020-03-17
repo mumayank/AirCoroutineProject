@@ -1,6 +1,7 @@
 package com.mumayank.aircoroutine
 
 import android.app.Activity
+import android.telecom.Call
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelStoreOwner
@@ -19,17 +20,17 @@ class AirCoroutine {
 
         fun execute(viewModel: ViewModel?, callback: Callback?) {
             viewModel?.viewModelScope?.launch {
-                var taskResult = TaskResult.FAILURE
+                var taskResult: Boolean? = true
                 val deferred =
-                    async(if (callback?.getTaskType() == TaskType.IO) Dispatchers.IO else Dispatchers.Default) {
+                    async(if (callback?.isTaskTypeCalculation() == false) Dispatchers.IO else Dispatchers.Default) {
                         taskResult = try {
-                            callback?.doTaskInBg(viewModel) ?: TaskResult.FAILURE
+                            callback?.doTaskInBg(viewModel) ?: false
                         } catch (e: Exception) {
-                            TaskResult.FAILURE
+                            false
                         }
                     }
                 deferred.await()
-                if (taskResult == TaskResult.SUCCESS) {
+                if (taskResult == true) {
                     try {
                         callback?.onSuccess(viewModel)
                     } catch (e: Exception) {
@@ -45,6 +46,10 @@ class AirCoroutine {
             }
         }
 
+        fun execute(activity: Activity?, callback: Callback?) {
+            execute(getViewModel(activity, AirViewModel::class.java), callback)
+        }
+
     }
 
     enum class TaskResult {
@@ -52,14 +57,9 @@ class AirCoroutine {
         FAILURE
     }
 
-    enum class TaskType {
-        IO,
-        CALCULATIONS
-    }
-
     interface Callback {
-        suspend fun doTaskInBg(viewModel: ViewModel): TaskResult?
-        fun getTaskType(): TaskType?
+        suspend fun doTaskInBg(viewModel: ViewModel): Boolean?
+        fun isTaskTypeCalculation(): Boolean
         fun onSuccess(viewModel: ViewModel)
         fun onFailure(viewModel: ViewModel)
     }

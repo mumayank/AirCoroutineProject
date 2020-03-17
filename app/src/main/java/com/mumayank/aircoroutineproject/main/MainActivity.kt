@@ -7,6 +7,10 @@ import com.mumayank.aircoroutineproject.helper.FragmentHelper
 
 class MainActivity : AppCompatActivity() {
 
+    companion object {
+        var value = 0
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.main_activity)

@@ -29,32 +29,30 @@ class TwoFragment : Fragment() {
     }
 
     private fun updateValue() {
-        AirCoroutine.execute(
-            AirCoroutine.getViewModel(
-                activity as Activity,
-                MainViewModel::class.java
-            ), object : AirCoroutine.Callback {
+        AirCoroutine.execute(activity as Activity, object : AirCoroutine.Callback {
 
-                override suspend fun doTaskInBg(viewModel: ViewModel): AirCoroutine.TaskResult? {
-                    delay(100)
-                    (viewModel as MainViewModel).value++
-                    return AirCoroutine.TaskResult.SUCCESS
-                }
+            override suspend fun doTaskInBg(viewModel: ViewModel): Boolean? {
+                delay(100)
+                MainActivity.value++
+                return true
+            }
 
-                override fun getTaskType(): AirCoroutine.TaskType? {
-                    return AirCoroutine.TaskType.CALCULATIONS
-                }
+            override fun isTaskTypeCalculation(): Boolean {
+                return true
+            }
 
-                override fun onSuccess(viewModel: ViewModel) {
-                    textView?.text = ((viewModel as MainViewModel).value).toString()
-                    updateValue()
-                }
+            override fun onSuccess(viewModel: ViewModel) {
+                textView?.text =
+                    (MainActivity.value.toFloat()).toInt()
+                        .toString()
+                updateValue()
+            }
 
-                override fun onFailure(viewModel: ViewModel) {
-                    Toast.makeText(activity, "Something went wrong", Toast.LENGTH_SHORT).show()
-                }
+            override fun onFailure(viewModel: ViewModel) {
+                Toast.makeText(activity, "Something went wrong", Toast.LENGTH_SHORT).show()
+            }
 
-            })
+        })
     }
 
 }
