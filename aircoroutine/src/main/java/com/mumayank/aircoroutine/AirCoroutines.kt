@@ -3,6 +3,9 @@ package com.mumayank.aircoroutine
 import android.app.Activity
 import androidx.activity.ComponentActivity
 import androidx.activity.viewModels
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModelStoreOwner
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -25,11 +28,8 @@ class AirCoroutines {
 
     companion object {
 
-        fun perform(activity: Activity, taskType: TaskType, callback: Callback?) {
-            val model =
-                getAirViewModelOfActivity(
-                    activity
-                )
+        fun <T : ViewModel> perform(activity: Activity, taskType: TaskType, callback: Callback?, viewModelClass: Class<T>) {
+            val model = getViewModel(activity, viewModelClass)
             model.viewModelScope.launch(
                 when (taskType) {
                     TaskType.UI -> Dispatchers.Main
@@ -58,10 +58,16 @@ class AirCoroutines {
             }
         }
 
+        fun perform(activity: Activity, taskType: TaskType, callback: Callback?) {
+            perform(activity, taskType, callback, AirViewModel::class.java)
+        }
+
+        fun <T : ViewModel> getViewModel(activity: Activity?, viewModelClass: Class<T>): T {
+            return ViewModelProvider(activity as ViewModelStoreOwner)[viewModelClass]
+        }
+
         fun getAirViewModelOfActivity(activity: Activity): AirViewModel {
-            val componentActivity = activity as ComponentActivity
-            val model by componentActivity.viewModels<AirViewModel>()
-            return model
+            return ViewModelProvider(activity as ViewModelStoreOwner)[AirViewModel::class.java]
         }
 
         fun isAirViewModelOfActivityAlreadyInit(activity: Activity): Boolean {
