@@ -8,29 +8,31 @@ android {
     buildToolsVersion "29.0.3"
 
     defaultConfig {
-        minSdkVersion 18
+        minSdkVersion 14
         targetSdkVersion 29
-        versionCode 2
-        versionName "0.2"
+        versionCode 3
+        versionName "0.3"
     }
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+
+    kotlinOptions {
+        jvmTarget = JavaVersion.VERSION_1_8.toString()
+    }
+
 }
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.3.70"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.3.72"
     implementation 'androidx.appcompat:appcompat:1.1.0'
     implementation 'androidx.core:core-ktx:1.2.0'
 
-    api "androidx.lifecycle:lifecycle-extensions:2.2.0" // for view model
-    api "androidx.lifecycle:lifecycle-common-java8:2.2.0"
-    api "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.0" // for coroutine, core
-    api "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.3.0" // for coroutine, android
-    api "androidx.lifecycle:lifecycle-viewmodel-ktx:2.2.0" // for coroutine with view model
+    api "androidx.lifecycle:lifecycle-viewmodel-ktx:2.2.0"
+    api "androidx.fragment:fragment-ktx:1.2.4"
 }
 
 repositories {
