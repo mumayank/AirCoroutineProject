@@ -3,11 +3,7 @@ package com.mumayank.aircoroutineproject.sub
 import android.app.Activity
 import android.os.Bundle
 import android.widget.Toast
-import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelStore
 import com.mumayank.aircoroutine.AirCoroutines
 import com.mumayank.aircoroutine.AirViewModel
 import com.mumayank.aircoroutineproject.R
@@ -37,17 +33,17 @@ class SubActivity : AppCompatActivity() {
 
         fun beginTask(activity: Activity, airViewModel: AirViewModel) {
 
-            AirCoroutines.perform(
+            AirCoroutines.execute(
                 activity,
                 AirCoroutines.TaskType.COMPUTATION,
                 object : AirCoroutines.Callback {
 
-                    override suspend fun onTask(coroutineScope: CoroutineScope): Boolean {
+                    override suspend fun aOnTask(coroutineScope: CoroutineScope): Boolean {
                         delay(1)
                         return true
                     }
 
-                    override fun onSuccess() {
+                    override fun bOnSuccess() {
                         airViewModel.any = (airViewModel.any as Int) + 1
                         EventBus.getDefault().postSticky(OnIndexUpdatedEvent())
                         beginTask(
@@ -56,7 +52,7 @@ class SubActivity : AppCompatActivity() {
                         )
                     }
 
-                    override fun onFailure(errorMessage: String) {
+                    override fun cOnError(errorMessage: String) {
                         Toast.makeText(activity, errorMessage, Toast.LENGTH_SHORT).show()
                     }
 

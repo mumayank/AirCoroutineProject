@@ -1,8 +1,6 @@
 package com.mumayank.aircoroutine
 
 import android.app.Activity
-import androidx.activity.ComponentActivity
-import androidx.activity.viewModels
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelStoreOwner
@@ -21,14 +19,14 @@ class AirCoroutines {
     }
 
     interface Callback {
-        suspend fun onTask(coroutineScope: CoroutineScope): Boolean
-        fun onSuccess()
-        fun onFailure(errorMessage: String)
+        suspend fun aOnTask(coroutineScope: CoroutineScope): Boolean
+        fun bOnSuccess()
+        fun cOnError(errorMessage: String)
     }
 
     companion object {
 
-        fun <T : ViewModel> perform(activity: Activity, taskType: TaskType, callback: Callback?, viewModelClass: Class<T>) {
+        fun <T : ViewModel> execute(activity: Activity, taskType: TaskType, callback: Callback?, viewModelClass: Class<T>) {
             val model = getViewModel(activity, viewModelClass)
             model.viewModelScope.launch(
                 when (taskType) {
@@ -39,27 +37,27 @@ class AirCoroutines {
             ) {
                 try {
                     val result = this.async {
-                        callback?.onTask(model.viewModelScope) ?: false
+                        callback?.aOnTask(model.viewModelScope) ?: false
                     }
                     if (result.await()) {
                         this.launch(Dispatchers.Main) {
-                            callback?.onSuccess()
+                            callback?.bOnSuccess()
                         }
                     } else {
                         this.launch(Dispatchers.Main) {
-                            callback?.onFailure("Developer returned false as the task result")
+                            callback?.cOnError("Developer returned false as the task result")
                         }
                     }
                 } catch (e: Exception) {
                     this.launch(Dispatchers.Main) {
-                        callback?.onFailure(e.toString())
+                        callback?.cOnError(e.toString())
                     }
                 }
             }
         }
 
-        fun perform(activity: Activity, taskType: TaskType, callback: Callback?) {
-            perform(activity, taskType, callback, AirViewModel::class.java)
+        fun execute(activity: Activity, taskType: TaskType, callback: Callback?) {
+            execute(activity, taskType, callback, AirViewModel::class.java)
         }
 
         fun <T : ViewModel> getViewModel(activity: Activity?, viewModelClass: Class<T>): T {
